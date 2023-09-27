@@ -4,24 +4,20 @@
 | 这个作业要求在哪里 | <center>[结对项目](https://edu.cnblogs.com/campus/gdgy/CSGrade21-12/homework/13016)</center> |
 | 这个作业的目标 | 实现自动生成四则运算题目功能，以及给定题目和答案、判断答案对错的功能 |
 
-<font size=3>本项目上传至个人GitHub：[yulinnn/PythonProject_FourOperations](https://github.com/yulinnn/PythonProject_FourOperations)</font>
+注：main.py为程序源代码，requirements.txt为依赖，文件Answer_Vertification_test1、Answer_Vertification_test2中存放了运行测试中题目生成功能测试的结果，文件Expression&Answer_Generation_test1、Expression&Answer_Generation_test2、Expression&Answer_Generation_test3中存放了运行测试中错误检测功能测试的结果。
 
 # <font color=#484891>项目需求</font>
 题目：实现一个自动生成小学四则运算题目的命令行程序。   
 
 需求：
 1. 使用 -n 参数控制生成题目的个数。例如：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 Myapp.exe -n 10
-</div>
-
+```
 2. 使用 -r 参数控制题目中数值（自然数、真分数和真分数分母）的范围。例如：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 Myapp.exe -r 10
-</div>
-
+```
 将生成10以内（不包括10）的四则运算题目。该参数可以设置为1或其他自然数。该参数必须给定，否则程序报错并给出帮助信息。
 
 3. 生成的题目中计算过程不能产生负数，也就是说算术表达式中如果存在形如e1 − e2的子表达式，那么e1 ≥ e2。
@@ -29,36 +25,28 @@ Myapp.exe -r 10
 5. 每道题目中出现的运算符个数不超过3个。
 6. 程序一次运行生成的题目不能重复，即任何两道题目不能通过有限次交换+和×左右的算术表达式变换为同一道题目。
 7. 生成的题目存入执行程序的当前目录下的Exercises.txt文件，格式如下：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 四则运算题目1
-<br />四则运算题目2
-<br />……
-</div>
-
+四则运算题目2
+……
+```
 8. 在生成题目的同时，计算出所有题目的答案，并存入执行程序的当前目录下的Answers.txt文件，格式如下：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 答案1
-<br />答案2
-<br />……
-</div>
-
+答案2
+……
+```
 9. 真分数在输入输出时采用如下格式：真分数五分之三表示为3/5，真分数二又八分之三表示为2’3/8。特别的，真分数的运算如下例所示：1/6 + 1/8 = 7/24。
 10. 程序应能支持一万道题目的生成。
 11. 程序支持对给定的题目文件和答案文件，判定答案中的对错并进行数量统计，输入参数如下：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 Myapp.exe -e <exercisefile>.txt -a <answerfile>.txt
-</div>
-
+```
 &emsp;&emsp;统计结果输出到文件Grade.txt，格式如下：
-
-<div style="background-color: #f2f2f2; padding: 10px;">
+```
 Correct: 5 (1, 3, 5, 7, 9)
-<br />Wrong: 5 (2, 4, 6, 8, 10)
-</div>
-
+Wrong: 5 (2, 4, 6, 8, 10)
+```
 &emsp;&emsp;其中“:”后面的数字5表示对/错的题目的数量，括号内的是对/错题目的编号。为简单起见，假设输入的题目都是按照顺序编号的符合规范的题目。
 
 # <font color=#484891>PSP</font>
@@ -133,9 +121,10 @@ Correct: 5 (1, 3, 5, 7, 9)
 ## <font color=#6495ED>具体实现</font>
 ### <font>二叉树结构</font>
 &emsp;&emsp;采用二叉树结构生成表达式，存储形式如下：
+
 ![](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927143038420-474536264.png)
 
-二叉树结构定义如下：
+&emsp;&emsp;二叉树结构定义如下：
 ```
 class Node:
     def __init__(self, item):
@@ -311,7 +300,7 @@ def generate_expressions_and_answers(number, ranging):
 4. -e [题目路径] -a [答案路径]，对给定的题目文件和答案文件，判定答案中的对错并进行数量统计
 
 &emsp;&emsp;其中选项-n、-r必须配合使用，选项-e、-a必须配合使用。同时使用选项-n、-r，则激活题目生成功能，结果存入执行程序的当前目录下的Exercises.txt文件和Answers.txt文件；同时使用选项-e、-a，则激活答案检测功能，统计结果存入执行程序的当前目录下的Grade.txt文件。这两种功能可以同时使用。
-&emsp;&emsp;若用户输入的选项中出现以下情况，则抛出错误提示：
+<br />&emsp;&emsp;若用户输入的选项中出现以下情况，则抛出错误提示：
 1. -n和-r选项未搭配使用，-e和-a选项未搭配使用，或没有输入任何选项
 2. 使用-n和-r选项时未能提供正确的参数（即整数）
 3. 使用-e和-a选项时未能提供正确的文件路径（文件路径检测在函数make_correction中实现）
@@ -392,150 +381,58 @@ def main(argv):
 ## <font color=#6495ED>差错检测</font>
 &emsp;&emsp;命令行参数输入错误时抛出错误提示，显示如下：
 ![screenshot1](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927162912322-632796611.png)
-<style>
-    img[alt="screenshot1"]{width:600px}
-</style>
 ![screenshot2](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927162929336-1678351722.png)
-<style>
-    img[alt="screenshot2"]{width:600px}
-</style>
 ![screenshot3](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927163008359-433795035.png)
-<style>
-    img[alt="screenshot3"]{width:600px}
-</style>
 &emsp;&emsp;文件路径错误时抛出错误提示，显示如下：
 ![screenshot4](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927163020864-1134781519.png)
-<style>
-    img[alt="screenshot4"]{width:900px}
-</style>
 ## <font color=#6495ED>显示帮助</font>
 &emsp;&emsp;输入命令main.py -h，程序使用帮助显示如下：
 ![screenshot5](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927163510002-1064907396.png)
-<style>
-    img[alt="screenshot5"]{width:900px}
-</style>
 ## <font color=#6495ED>题目生成功能测试</font>
 ### <font>测试1</font>
 &emsp;&emsp;生成20个题目，数值范围[1, 10]。输入参数-n 20 -r 10，结果如下：
 ![screenshot6](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927170903126-723369887.png)
-<style>
-    img[alt="screenshot6"]{width:790px}
-</style>
 ![screenshot7](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927170910975-706358423.png)![screenshot8](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927170906801-1406123216.png)
-<style>
-    img[alt="screenshot7"]{width:365px}
-</style>
-<style>
-    img[alt="screenshot8"]{width:362px}
-</style>
-
 ### <font>测试2</font>
 &emsp;&emsp;生成30个题目，数值范围[1, 30]。输入参数-n 30 -r 30，结果如下：
 ![screenshot9](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927171511543-2086293770.png)
-<style>
-    img[alt="screenshot9"]{width:790px}
-</style>
 ![screenshot10](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927171609690-915078602.png)![screenshot11](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927171617278-931062477.png)
-<style>
-    img[alt="screenshot10"]{width:365px}
-</style>
-<style>
-    img[alt="screenshot11"]{width:357px}
-</style>
-
 ### <font>测试3</font>
 &emsp;&emsp;生成10000个题目，数值范围[1, 20]。输入参数-n 10000 -r 20，结果如下（仅部分截图）：
 ![screenshot12](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927171903131-1658430804.png)
-<style>
-    img[alt="screenshot12"]{width:790px}
-</style>
 ![screenshot13](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927171934747-276064059.png)![screenshot14](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927172001955-896654847.png)
-<style>
-    img[alt="screenshot13"]{width:365px}
-</style>
-<style>
-    img[alt="screenshot14"]{width:355px}
-</style>
-
 ## <font color=#6495ED>答案检测功能测试</font>
 &emsp;&emsp;先通过程序的题目生成功能生成20个题目，再对生成的Answers.txt中的部分答案进行修改，然后用生成的表达式Exercises.txt与修改后的答案进行答案检测功能测试。
 ### <font>测试1</font>
 &emsp;&emsp;生成20个题目，数值范围[1, 20]。输入参数-n 20 -r 20，结果如下：
 ![screenshot15](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927190545078-202777820.png)
-<style>
-    img[alt="screenshot15"]{width:790px}
-</style>
 ![screenshot16](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927190627813-765766032.png)![screenshot17](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927190632541-233324859.png)
-<style>
-    img[alt="screenshot16"]{width:351px}
-</style>
-<style>
-    img[alt="screenshot17"]{width:365px}
-</style>
-&emsp;&emsp;对原答案进行修改，塞入几个错误答案，然后将修改后的答案作为待测答案，结果如下：
+<br />&emsp;&emsp;对原答案进行修改，塞入几个错误答案，然后将修改后的答案作为待测答案，结果如下：
 ![screenshot18](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191032532-1354647363.png)
-<style>
-    img[alt="screenshot18"]{width:365px}
-</style>
-&emsp;&emsp;将题目表达式的地址和修改后答案的地址输入命令行，结果如下：
+<br />&emsp;&emsp;将题目表达式的地址和修改后答案的地址输入命令行，结果如下：
 ![screenshot19](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191256119-875407996.png)
-<style>
-    img[alt="screenshot19"]{width:790px}
-</style>
 ![screenshot20](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191405217-2020111862.png)
-<style>
-    img[alt="screenshot20"]{width:500px}
-</style>
-&emsp;&emsp;可以看到错误的答案全部被检出。
-
+<br />&emsp;&emsp;可以看到错误的答案全部被检出。
 ### <font>测试2</font>
 &emsp;&emsp;生成20个题目，数值范围[1, 40]。输入参数-n 20 -r 40，结果如下：
 ![screenshot21](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191631436-149520620.png)
-<style>
-    img[alt="screenshot21"]{width:790px}
-</style>
 ![screenshot22](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191702270-316967460.png)![screenshot23](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927191740401-2060155727.png)
-<style>
-    img[alt="screenshot22"]{width:360px}
-</style>
-<style>
-    img[alt="screenshot23"]{width:365px}
-</style>
-&emsp;&emsp;对原答案进行修改，塞入几个错误答案，然后将修改后的答案作为待测答案，结果如下：
+<br />&emsp;&emsp;对原答案进行修改，塞入几个错误答案，然后将修改后的答案作为待测答案，结果如下：
 ![screenshot24](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927193144669-688188374.png)
-<style>
-    img[alt="screenshot24"]{width:365px}
-</style>
-&emsp;&emsp;将题目表达式的地址和修改后答案的地址输入命令行，结果如下：
+<br />&emsp;&emsp;将题目表达式的地址和修改后答案的地址输入命令行，结果如下：
 ![screenshot25](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927193236828-2109002240.png)
-<style>
-    img[alt="screenshot25"]{width:790px}
-</style>
 ![screenshot26](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927193320670-1462372081.png)
-<style>
-    img[alt="screenshot26"]{width:500px}
-</style>
-&emsp;&emsp;可以看到错误的答案全部被检出。
-
+<br />&emsp;&emsp;可以看到错误的答案全部被检出。
 # <font color=#484891>性能分析</font>
 &emsp;&emsp;使用Python自带的性能分析模块cProfile进行性能分析。由于答案检查功能只用到单个函数make_correction，性能分析意义较小，故仅对题目生成功能进行性能分析。
-&emsp;&emsp;在终端中输入对应命令，并以cumtime（指定的函数及其所有子函数从调用到退出消耗的累积时间）降序排序，分别测试在生成100个题目、1000个题目、10000个题目时的程序性能（表达式的数值范围均为[1, 20]），结果如下：
-&emsp;&emsp;生成100个题目时：
+<br />&emsp;&emsp;在终端中输入对应命令，并以cumtime（指定的函数及其所有子函数从调用到退出消耗的累积时间）降序排序，分别测试在生成100个题目、1000个题目、10000个题目时的程序性能（表达式的数值范围均为[1, 20]），结果如下：
+<br />&emsp;&emsp;生成100个题目时：
 ![screenshot27](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927194918593-967303774.png)
-<style>
-    img[alt="screenshot27"]{width:800px}
-</style>
 &emsp;&emsp;生成1000个题目时：
 ![screenshot28](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927195134345-895342271.png)
-<style>
-    img[alt="screenshot28"]{width:800px}
-</style>
 &emsp;&emsp;生成10000个题目时：
 ![screenshot29](https://img2023.cnblogs.com/blog/3270349/202309/3270349-20230927195150186-596325689.png)
-<style>
-    img[alt="screenshot29"]{width:800px}
-</style>
 &emsp;&emsp;可以看到，在生成100个题目、1000个题目、10000个题目时，分别耗时0.066s、0.840s、36.176s，题目生成效率分别为：1515.15题/s、1190.48题/s、276.43题/s，说明生成的题目越多、题目生成的效率越低，并且效率的降低呈非线性特征，生成的题目越多、效率降低的速度越快。
-&emsp;&emsp;分析函数占用的时间，发现在生成100个题目、1000个题目、10000个题目时，函数is_isomorphic的耗时占总耗时的比例分别为：3.03%、26.90%、67.12%，可以看到：随着题目生成增多，函数is_isomorphic的耗时占用比例呈非线性增高，在生成10000个题目时占比达到最高（函数generate_expressions_and_answers为生成题目功能的整合函数，故不计入）。函数is_isomorphic的作用是判断两颗二叉树是否同构、即判断两个表达式是否重复，每一个新生成的表达式都要与先前生成的表达式进行对比；随着生成表达式的增多，新生成的表达式需要对比的次数也增多，故生成n个题目需要对比的总次数遵循等差数列求和公式：n(n - 1) / 2，这也解释了为什么生成的题目越多、题目生成的效率越低。针对此性能问题暂未想到优化方案。
+<br />&emsp;&emsp;分析函数占用的时间，发现在生成100个题目、1000个题目、10000个题目时，函数is_isomorphic的耗时占总耗时的比例分别为：3.03%、26.90%、67.12%，可以看到：随着题目生成增多，函数is_isomorphic的耗时占用比例呈非线性增高，在生成10000个题目时占比达到最高（函数generate_expressions_and_answers为生成题目功能的整合函数，故不计入）。函数is_isomorphic的作用是判断两颗二叉树是否同构、即判断两个表达式是否重复，每一个新生成的表达式都要与先前生成的表达式进行对比；随着生成表达式的增多，新生成的表达式需要对比的次数也增多，故生成n个题目需要对比的总次数遵循等差数列求和公式：n(n - 1) / 2，这也解释了为什么生成的题目越多、题目生成的效率越低。针对此性能问题暂未想到优化方案。
 # <font color=#484891>项目小结</font>
 &emsp;&emsp;本项目的开发过程中，遇到了很多边界问题导致的程序报错，以及很多由于表达式括号添加不当、带分数和分数的一般形式之间的转化操作有误而导致的计算错误，这些问题在错误检测功能、函数make_correction的实现过程中尤为突出，提醒了我对于功能设计和边界情况的处理应当更加小心谨慎，对于各种情形的判断应当有更加周全的考虑。
